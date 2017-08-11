@@ -25,7 +25,6 @@ class Collapsible extends React.Component {
         const {isExpanded, height} = this.state;
         const currentHeight = isExpanded ? height : 0;
         return (
-            // Back ticks (``)
             <div className="panel panel-success" onClick={(e) => this.handleToggle(e)}>
                 <div className="panel-heading">
                     <h4>{title}</h4>
