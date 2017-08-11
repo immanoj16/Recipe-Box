@@ -8,16 +8,52 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            title: '',
+            ingredients: [],
             recipes: [
                 {"title":"Pumpkin Pie","ingredients":["Pumpkin Puree","Sweetened Condensed Milk","Eggs","Pumpkin Pie Spice","Pie Crust"]},
                 {"title":"Spaghetti","ingredients":["Noodles","Tomato Sauce","(Optional) Meatballs"]},
                 {"title":"Onion Pie","ingredients":["Onion","Pie Crust","Sounds Yummy right?"]},
             ]
-        }
+        };
+        this.addRecipe = this.addRecipe.bind(this);
+        this.handleTitle = this.handleTitle.bind(this);
+        this.handleIngredients = this.handleIngredients.bind(this);
+    }
+
+    handleTitle (e) {
+        this.setState({
+            title: e.target.value
+        });
+    }
+
+    handleIngredients (e) {
+        this.setState({
+            ingredients: e.target.value.split(',')
+        });
+    }
+
+    addRecipe (e) {
+        e.prevent
+
+        const { recipes, title, ingredients } = this.state;
+
+        const newState = {
+            title,
+            ingredients
+        };
+
+        const list = Object.assign([], recipes);
+        list.push(newState);
+
+        this.setState({
+            recipes: list
+        })
     }
 
     render() {
-        const { recipes } = this.state;
+        const { recipes, title, ingredients } = this.state;
+        console.log(title, ingredients, recipes);
         return (
             <div>
                 <div className="row">
@@ -26,7 +62,7 @@ class App extends React.Component {
                             <div className="panel-group">
                                 {recipes.length > 0 ? recipes.map(recipe => {
                                     return (
-                                        <Collapsible title={recipe.title}>
+                                        <Collapsible title={recipe.title} key={recipe.title}>
                                             <Ingredients ingredients={recipe.ingredients}/>
                                         </Collapsible>
                                     )
@@ -49,16 +85,16 @@ class App extends React.Component {
                                         <form>
                                             <div className="form-group">
                                                 <label>Recipe</label>
-                                                <input type="text" className="form-control" id="recipe" placeholder="Recipe Name" />
+                                                <input type="text" className="form-control" id="recipe" placeholder="Recipe Name" onChange={this.handleTitle}/>
                                             </div>
                                             <div className="form-group">
                                                 <label>Ingredients</label>
-                                                <textarea className="form-control" id="ingredients" rows="3" placeholder="Enter ingredients, Separated by commas" />
+                                                <textarea className="form-control" id="ingredients" rows="3" placeholder="Enter ingredients, Separated by commas" onChange={this.handleIngredients}/>
                                             </div>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-primary">Add Recipe</button>
+                                        <button type="button" className="btn btn-primary" onClick={this.addRecipe}>Add Recipe</button>
                                         <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>

@@ -10,9 +10,9 @@ class Ingredients extends React.Component {
                 <h4 className="text-center">Ingredients</h4><hr />
                 <ul className="list-group">
                     {ingredients.length > 0 ?
-                        ingredients.map(ingredient => {
+                        ingredients.map((ingredient, id) => {
                             return (
-                                <li className="list-group-item">{ingredient}</li>
+                                <li key={id + 1} className="list-group-item">{ingredient}</li>
                             )
                         }) : null}
                 </ul>
