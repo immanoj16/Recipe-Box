@@ -34,7 +34,6 @@ class App extends React.Component {
     }
 
     addRecipe (e) {
-        e.prevent
 
         const { recipes, title, ingredients } = this.state;
 
@@ -47,13 +46,18 @@ class App extends React.Component {
         list.push(newState);
 
         this.setState({
-            recipes: list
-        })
+            recipes: list,
+            title: '',
+            ingredients: []
+        });
+
+        e.preventDefault();
     }
 
     render() {
+
         const { recipes, title, ingredients } = this.state;
-        console.log(title, ingredients, recipes);
+
         return (
             <div>
                 <div className="row">
@@ -63,7 +67,7 @@ class App extends React.Component {
                                 {recipes.length > 0 ? recipes.map(recipe => {
                                     return (
                                         <Collapsible title={recipe.title} key={recipe.title}>
-                                            <Ingredients ingredients={recipe.ingredients}/>
+                                            <Ingredients recipe={recipe}/>
                                         </Collapsible>
                                     )
                                 }) : null}
@@ -85,16 +89,16 @@ class App extends React.Component {
                                         <form>
                                             <div className="form-group">
                                                 <label>Recipe</label>
-                                                <input type="text" className="form-control" id="recipe" placeholder="Recipe Name" onChange={this.handleTitle}/>
+                                                <input type="text" className="form-control" id="recipe" placeholder="Recipe Name" value={this.state.title} onChange={this.handleTitle}/>
                                             </div>
                                             <div className="form-group">
                                                 <label>Ingredients</label>
-                                                <textarea className="form-control" id="ingredients" rows="3" placeholder="Enter ingredients, Separated by commas" onChange={this.handleIngredients}/>
+                                                <textarea className="form-control" id="ingredients" rows="3" placeholder="Enter ingredients, Separated by commas" value={this.state.ingredients} onChange={this.handleIngredients}/>
                                             </div>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-primary" onClick={this.addRecipe}>Add Recipe</button>
+                                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.addRecipe}>Add Recipe</button>
                                         <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
@@ -106,4 +110,5 @@ class App extends React.Component {
         );
     }
 }
+
 export default App;
